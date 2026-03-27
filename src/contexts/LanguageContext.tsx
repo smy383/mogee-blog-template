@@ -94,6 +94,8 @@ const UI: Record<string, Record<Lang, UIValue>> = {
   copied:              { ko: '복사됨!',                        en: 'Copied!',                          ja: 'コピーしました！' },
   shareVia:            { ko: '공유',                           en: 'Share',                            ja: 'シェア' },
   shareTwitter:        { ko: 'X에 공유',                       en: 'Share on X',                       ja: 'Xでシェア' },
+  collapseTags:        { ko: '접기 ↑',                         en: 'Collapse ↑',                       ja: '折りたたむ ↑' },
+  moreTags:            { ko: '개 더보기',                       en: 'more',                             ja: 'もっと見る' },
 };
 
 export function t(lang: Lang, key: string, arg?: number): string {

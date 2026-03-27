@@ -7,7 +7,7 @@
   },
   "functions": {
     "source": "functions",
-    "codebase": "mogee-site"
+    "codebase": "blog-template"
   },
   "hosting": {
     "public": "build",

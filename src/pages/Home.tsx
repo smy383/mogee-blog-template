@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { collection, query, orderBy, getDocs } from 'firebase/firestore';
+import { collection, query, orderBy, getDocsFromServer } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import BlogCard, { Post } from '../components/BlogCard';
 import AppCarousel from '../components/AppCarousel';
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
     const fetchPosts = async () => {
       try {
         const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
-        const snap = await getDocs(q);
+        const snap = await getDocsFromServer(q);
         const data = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post));
         setPosts(data);
       } catch {
@@ -46,16 +46,20 @@ const Home: React.FC = () => {
     ? posts.filter((p) => getPostTags(p).includes(selectedTag))
     : posts;
 
+  const SITE_URL = process.env.REACT_APP_SITE_URL || 'https://your-blog.web.app';
+  const SITE_NAME = process.env.REACT_APP_SITE_NAME || 'My Blog';
+  const SITE_DESC = process.env.REACT_APP_SITE_DESCRIPTION || 'My personal developer blog';
+
   const homeJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    name: 'Mogee Development',
-    url: 'https://mogee.org',
-    description: 'Flutter 앱 개발 블로그. AI, 앱 개발, 기술 이야기를 공유합니다.',
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESC,
     author: {
       '@type': 'Person',
-      name: 'Mogee Development',
-      url: 'https://mogee.org',
+      name: SITE_NAME,
+      url: SITE_URL,
     },
   };
 
@@ -101,12 +105,10 @@ const Home: React.FC = () => {
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             className="flex-shrink-0 hidden sm:block"
           >
-            <img
-              src="/character.png"
-              alt="mogee character"
-              className="w-32 md:w-40 drop-shadow-xl"
-              loading="eager"
-            />
+            {/* Add your own character/mascot image to public/character.png */}
+            <div className="w-32 md:w-40 h-32 md:h-40 rounded-2xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-5xl">
+              ✍️
+            </div>
           </motion.div>
         </motion.div>
 
@@ -146,7 +148,7 @@ const Home: React.FC = () => {
                 onClick={() => setShowAllTags((v) => !v)}
                 className="px-3 py-1.5 rounded-full text-sm font-medium bg-white border border-dashed border-gray-300 text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-all"
               >
-                {showAllTags ? '접기 ↑' : `+${allTags.length - TAG_LIMIT}개 더보기`}
+                {showAllTags ? t(lang, 'collapseTags') : `+${allTags.length - TAG_LIMIT} ${t(lang, 'moreTags')}`}
               </button>
             )}
           </motion.div>

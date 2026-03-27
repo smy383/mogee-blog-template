@@ -171,16 +171,19 @@ const Portfolio: React.FC = () => {
     fetchApps();
   }, []);
 
+  const SITE_URL = process.env.REACT_APP_SITE_URL || 'https://your-blog.web.app';
+  const SITE_NAME = process.env.REACT_APP_SITE_NAME || 'My Blog';
+
   const portfolioJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Portfolio | Mogee Development',
-    description: 'Flutter 앱 및 웹 서비스 포트폴리오.',
-    url: 'https://mogee.org/portfolio',
+    name: `Portfolio | ${SITE_NAME}`,
+    description: 'Portfolio showcase',
+    url: `${SITE_URL}/portfolio`,
     author: {
       '@type': 'Person',
-      name: 'Mogee Development',
-      url: 'https://mogee.org',
+      name: SITE_NAME,
+      url: SITE_URL,
     },
   };
 
@@ -188,7 +191,7 @@ const Portfolio: React.FC = () => {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
       <SEOHead
         title="Portfolio"
-        description="Flutter 앱 및 웹 서비스 포트폴리오. Mogee Development가 만든 프로젝트들을 확인하세요."
+        description="Portfolio showcase - Check out my projects and work."
         canonicalPath="/portfolio"
         jsonLd={portfolioJsonLd}
       />

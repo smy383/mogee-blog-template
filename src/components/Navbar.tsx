@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="font-bold text-xl text-gray-900 tracking-tight hover:opacity-70 transition-opacity">
-          mogee<span className="text-indigo-500">.</span>
+          {process.env.REACT_APP_SITE_NAME || 'blog'}<span className="text-indigo-500">.</span>
         </Link>
 
         {/* Desktop Nav */}

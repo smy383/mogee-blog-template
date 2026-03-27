@@ -72,7 +72,9 @@ const PostDetail: React.FC = () => {
     return date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
-  const canonicalUrl = `https://mogee.org/post/${id}`;
+  const SITE_URL = process.env.REACT_APP_SITE_URL || 'https://your-blog.web.app';
+  const SITE_NAME = process.env.REACT_APP_SITE_NAME || 'My Blog';
+  const canonicalUrl = `${SITE_URL}/post/${id}`;
 
   const handleCopyLink = async () => {
     try {
@@ -188,17 +190,17 @@ const PostDetail: React.FC = () => {
     '@type': 'BlogPosting',
     headline: displayTitle,
     description: seoDescription,
-    url: `https://mogee.org/post/${post.id}`,
+    url: `${SITE_URL}/post/${post.id}`,
     datePublished: publishedIso,
     author: {
       '@type': 'Person',
-      name: 'Mogee Development',
-      url: 'https://mogee.org',
+      name: SITE_NAME,
+      url: SITE_URL,
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Mogee Development',
-      url: 'https://mogee.org',
+      name: SITE_NAME,
+      url: SITE_URL,
     },
     keywords: displayTags?.join(', '),
   };
