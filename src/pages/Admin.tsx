@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { collection, addDoc, updateDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -8,6 +8,15 @@ import { useAuth } from '../contexts/AuthContext';
 import { PenSquare, Tag, Save, Eye, ArrowLeft, X, ImagePlus, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    code: [...(defaultSchema.attributes?.code || []), 'className'],
+  },
+};
 
 type LangKey = 'ko' | 'en' | 'ja';
 
@@ -62,10 +71,6 @@ const Admin: React.FC = () => {
   const textareaKoRef = useRef<HTMLTextAreaElement>(null);
   const textareaEnRef = useRef<HTMLTextAreaElement>(null);
   const textareaJaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (!authLoading && !user) navigate('/login');
-  }, [user, authLoading, navigate]);
 
   useEffect(() => {
     if (!editId) return;
@@ -220,13 +225,15 @@ const Admin: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 pt-28 flex items-center justify-center">
-        <div className="text-gray-400">불러오는 중...</div>
+        <div className="text-gray-400">Loading...</div>
       </main>
     );
   }
+
+  if (!user) return <Navigate to="/login" replace />;
 
   const active = getActiveLang();
 
@@ -365,7 +372,7 @@ const Admin: React.FC = () => {
             {preview ? (
               <div className="bg-white/70 backdrop-blur-sm border border-gray-100 rounded-2xl p-6 min-h-96 prose prose-gray max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-indigo-500 prose-code:text-indigo-600 prose-code:bg-indigo-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-blockquote:border-indigo-300 prose-img:rounded-xl">
                 {active.content ? (
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{active.content}</ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}>{active.content}</ReactMarkdown>
                 ) : (
                   <p className="text-gray-300">내용을 입력하면 여기에 미리보기가 표시됩니다.</p>
                 )}

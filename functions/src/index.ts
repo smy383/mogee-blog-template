@@ -7,6 +7,9 @@ const db = admin.firestore();
 // TODO: Replace with your domain (e.g., https://your-blog.web.app or your custom domain)
 const SITE_URL = process.env.SITE_URL || "https://your-blog.web.app";
 
+// NOTE: The region below should match firebase.json > firestore > location
+// Options: us-central1, europe-west1, asia-northeast1, asia-northeast3, etc.
+
 export const sitemap = onRequest(
   { region: "asia-northeast3", cors: false },
   async (req, res) => {

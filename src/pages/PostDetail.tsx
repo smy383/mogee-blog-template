@@ -10,6 +10,15 @@ import SEOHead from '../components/SEOHead';
 import CommentSection from '../components/CommentSection';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    code: [...(defaultSchema.attributes?.code || []), 'className'],
+  },
+};
 import { Calendar, Clock, ArrowLeft, Pencil, Trash2, Link2, Share2, Eye, Heart } from 'lucide-react';
 
 const LANG_INFO: Record<Lang, { flag: string; label: string }> = {
@@ -316,7 +325,7 @@ const PostDetail: React.FC = () => {
           transition={{ duration: 0.3 }}
           className="prose prose-gray max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-indigo-500 prose-code:text-indigo-600 prose-code:bg-indigo-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-blockquote:border-indigo-300 prose-blockquote:text-gray-500"
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}>
             {displayContent}
           </ReactMarkdown>
         </motion.div>
