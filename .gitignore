@@ -1,0 +1,37 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# misc
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# firebase
+.firebase/
+firebase-debug.log
+*.log
+
+# functions
+functions/node_modules/
+functions/lib/
+
+# mcp
+blog-mcp/node_modules/
+blog-mcp/dist/
+blog-mcp/serviceAccount.json

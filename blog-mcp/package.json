@@ -1,0 +1,20 @@
+{
+  "name": "mogee-blog-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for managing Mogee personal blog via Firebase Firestore",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "node --max-old-space-size=8192 node_modules/.bin/tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "firebase-admin": "^13.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
